@@ -1,0 +1,9 @@
+{
+    "PGHOST": "localhost",
+    "PGUSER":  "postgres",
+    "PGDATABASE": "foodDelivery",
+    "PGPASSWORD": "Hieu19091997",
+    "PGPORT": 5432,
+    "MAX": 10,
+    "jwtSecret": "abcxyz"
+}
