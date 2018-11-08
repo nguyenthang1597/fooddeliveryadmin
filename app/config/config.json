@@ -1,8 +1,8 @@
 {
-    "PGHOST": "localhost",
-    "PGUSER":  "postgres",
-    "PGDATABASE": "foodDelivery",
-    "PGPASSWORD": "Hieu19091997",
+    "PGHOST": "c2-107-21-93-132.compute-1.amazonaws.com",
+    "PGUSER":  "aslhmwkzhekdoc",
+    "PGDATABASE": "dc1cd5phijh2s2",
+    "PGPASSWORD": "73300aed7812ebff64b04db5ce83acd00cd9ed81239559063ec1fbedf9649175",
     "PGPORT": 5432,
     "MAX": 10,
     "jwtSecret": "abcxyz"
