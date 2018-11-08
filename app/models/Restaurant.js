@@ -18,8 +18,8 @@ module.exports = {
       let hasName = name ? true : false;
       let hasOpenTime = openTime ? true : false
       let hasCloseTime = closeTime ? true : false
-
-
+      if(!(hasName && hasCloseTime && hasOpenTime))
+        return;
       return query(`
         Update "Restaurant" set 
         ${hasName ? `"Name" = '${name}'` : ""}
