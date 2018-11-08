@@ -6,6 +6,7 @@ const { createAddress , updateById} = require('../app/models/Address')
 //get danh sách nhà hàng
 router.get('/list', async (req, res) => {
   let list = await getAll();
+  console.log(list)
   res.json({ Restaurants: list.rows });
 })
 

@@ -1,7 +1,7 @@
-const pool = require("../config/pg");
+const client = require("../config/pg");
 
 module.exports = {
-    query: (query) => {
-        return pool.query(query);
+    query: async (query)  => {
+        return client.query(query)
     }
 }

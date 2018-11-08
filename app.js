@@ -14,10 +14,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(passport.initialize());
 
 require("./app/config/passport")(passport);
-pg.connect(err => {
-  if (err) console.log("Error: connect to DB.");
-  else console.log("Conneted to DB");
-});
+pg.connect().then(res => console.log(res)).catch(err => console.log(err))
 require("./routes")(app);
 
 process.on('uncaughtException', (err) => {
