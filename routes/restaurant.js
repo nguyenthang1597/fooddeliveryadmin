@@ -96,11 +96,11 @@ function checkValidWhenUpdate(payload) {
     isValid = false;
     error.Street = 'Xin kiểm tra lại tên đường';
   }
-  if (payload.Number && (typeof payload.Number !== 'string' || payload.Street.length === 0)) {
+  if (payload.Number && (typeof payload.Number !== 'string' || payload.Number.length === 0)) {
     isValid = false;
     error.Number = 'Xin kiểm tra lại số nhà';
   }
-  if(payload.OpenTime && (typeof payload.OpenTime !== 'string' || payload.Street.length === 0)){
+  if(payload.OpenTime && (typeof payload.OpenTime !== 'string' || payload.OpenTime.length === 0)){
     isValid = false;
     error.OpenTime = 'Xin kiểm tra lại thời gian mở cửa';
   }
