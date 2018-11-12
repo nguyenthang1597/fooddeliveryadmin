@@ -14,7 +14,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(passport.initialize());
 
 require("./app/config/passport")(passport);
-pg.connect().then(res => console.log(res)).catch(err => console.log(err))
+pg.connect().catch(err => console.log(err))
 require("./routes")(app);
 
 process.on('uncaughtException', (err) => {

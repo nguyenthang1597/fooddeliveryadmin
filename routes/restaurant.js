@@ -1,13 +1,16 @@
 const router = require("express").Router();
-const { getAll, createRes, getById, updateResById } = require('../app/models/Restaurant');
+const { getAll,countNumberRestaurant, createRes, getById, updateResById, getMenuById } = require('../app/models/Restaurant');
 const { createAddress , updateById} = require('../app/models/Address')
-
-
+const {createMenu, getMenuIdOfRes} = require('../app/models/RestaurantMenu')
+const {createFood} = require('../app/models/Food')
+const {addFoodToMenu} = require('../app/models/MenuDetail')
 //get danh sách nhà hàng
 router.get('/list', async (req, res) => {
-  let list = await getAll();
-  console.log(list)
-  res.json({ Restaurants: list.rows });
+  let page = req.query.page || 1;
+  let perpage = req.query.perpage || 10;
+  let list = await getAll(page, perpage);
+  let total = (await countNumberRestaurant()).rows[0].total;
+  res.json({Total: total, page: page, pages: Math.round(total/perpage), perpage:perpage, Restaurants: list.rows });
 })
 
 function checkValidateResData(payload) {
@@ -16,10 +19,6 @@ function checkValidateResData(payload) {
   if (!payload || typeof payload.Name !== 'string' || payload.Name.trim() === '' || payload.Name.length === 0) {
     isValid = false;
     error.Name = 'Xin kiểm tra lại tên nhà hàng';
-  }
-  if (!payload || typeof payload.Province !== 'string' || payload.Province.length === 0) {
-    isValid = false;
-    error.Province = 'Xin kiểm tra lại địa chỉ: Tỉnh/Thành phố';
   }
   if (!payload || typeof payload.District !== 'string' || payload.District.length === 0) {
     isValid = false;
@@ -55,12 +54,15 @@ router.post('/', async (req, res) => {
     })
   }
   try {
-    let resAddress = await createAddress(req.body.Province, req.body.District, req.body.Ward, req.body.Street, req.body.Number);
+    let resAddress = await createAddress(req.body.District, req.body.Ward, req.body.Street, req.body.Number);
     let AddressId = resAddress.rows[0].Id;
 
     let resRestaurant = await createRes(req.body.Name, req.body.OpenTime, req.body.CloseTime, req.body.photoUrl, AddressId);
+    let ResId = resRestaurant.rows[0].Id;
+    await createMenu(ResId);
     res.json({ Success: true })
   } catch (error) {
+    console.log(error)
     res.json({ Success: false })
   }
 })
@@ -134,9 +136,68 @@ router.put('/:id', async (req, res) => {
     res.json({ Success: true })
     
   } catch (error) {
-    console.log(error)
-    res.json({Success: false})
+    res.status(400).json({Success: false})
   }
+})
+
+router.get('/:id/menu', async (req, res) => {
+  try {
+    let result = await getMenuById(req.params.id);
+    return res.json({Total: result.rowCount, Menu: result.rows});
+  } catch (error) {
+    return res.json([])
+  }
+})
+
+//thêm món ăn
+
+function checkFoodInfo(payload){
+  let error = {};
+  let isValid = true;
+  if(!payload || !payload.Name || payload.Name.trim() === '' || payload.Name.length === 0){
+    isValid = false;
+    error.Name = 'Vui lòng kiểm tra lại tên món ăn'
+  }
+  if(!payload || !payload.PhotoUrl || payload.PhotoUrl.trim() === '' || payload.PhotoUrl.length === 0){
+    isValid = false;
+    error.Name = 'Vui lòng kiểm tra lại hình của món ăn'
+  }
+  if(!payload || !payload.Price){
+    isValid = false;
+    error.Name = 'Vui lòng kiểm tra lại giá món ăn'
+  }
+
+  return {
+    success: isValid,
+    error
+  }
+}
+
+router.post('/:id/menu', async (req, res) => {
+  let result = checkFoodInfo(req.body);
+
+  if(!result.success){
+    return res.status(400).json({
+      Success: false,
+      Error: result.error
+    })
+  }
+
+  try {
+    let menuId = (await getMenuIdOfRes(req.params.id)).rows[0].Menu;
+    console.log('menuId', menuId)
+    let foodId = (await createFood(req.body.Name, req.body.PhotoUrl, req.body.Price)).rows[0].Id;
+    await addFoodToMenu(menuId, foodId);
+    return res.json({
+      Success: true
+    })
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      Success:false
+    })
+  }
+
 })
 
 
