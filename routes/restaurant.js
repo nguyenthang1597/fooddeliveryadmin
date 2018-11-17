@@ -197,7 +197,11 @@ router.post('/:id/menu', async (req, res) => {
       Success:false
     })
   }
+})
 
+router.get('/:id', async (req, res) => {
+  let result = await getById(req.params.id);
+  return res.json({Resturant: result.rows[0]})
 })
 
 
