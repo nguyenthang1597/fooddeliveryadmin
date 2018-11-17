@@ -34,5 +34,12 @@ module.exports = {
     let list = [];
     list = Object.keys(district['xa-phuong']).map(item => ({id: item, name: district['xa-phuong'][item].name_with_type}))
     return list;
+  },
+  getWardByDistrictName: name => {
+    let districtID = Object.keys(Districts).find(i => Districts[i].name_with_type === name)
+    let district = Districts[districtID];
+    if(!district) return [];
+    list = Object.keys(district['xa-phuong']).map(item => ({id: item, name: district['xa-phuong'][item].name_with_type}))
+    return list;
   }
 }
