@@ -132,7 +132,7 @@ router.put('/:id', async (req, res) => {
       return res.json({Success: false, Message: `Không tìm thấy nhà hàng có Id = ${req.params.id}`})
     }
     let updateRes = await updateResById(restaurant.rows[0].Id, req.body.Name, req.body.OpenTime, req.body.CloseTime);
-    let   updateAdd = await updateById(restaurant.rows[0].Address, req.body.Province, req.body.District, req.body.Ward, req.body.Street, req.body.Number);
+    let   updateAdd = await updateById(restaurant.rows[0].Address, req.body.District, req.body.Ward, req.body.Street, req.body.Number);
     res.json({ Success: true })
     
   } catch (error) {
