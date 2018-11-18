@@ -155,17 +155,18 @@ router.get('/:id/menu', async (req, res) => {
 function checkFoodInfo(payload){
   let error = {};
   let isValid = true;
+  console.log(payload)
   if(!payload || !payload.Name || payload.Name.trim() === '' || payload.Name.length === 0){
     isValid = false;
     error.Name = 'Vui lòng kiểm tra lại tên món ăn'
   }
   if(!payload || !payload.PhotoUrl || payload.PhotoUrl.trim() === '' || payload.PhotoUrl.length === 0){
     isValid = false;
-    error.Name = 'Vui lòng kiểm tra lại hình của món ăn'
+    error.PhotoUrl = 'Vui lòng kiểm tra lại hình của món ăn'
   }
   if(!payload || !payload.Price){
     isValid = false;
-    error.Name = 'Vui lòng kiểm tra lại giá món ăn'
+    error.Price = 'Vui lòng kiểm tra lại giá món ăn'
   }
 
   return {
