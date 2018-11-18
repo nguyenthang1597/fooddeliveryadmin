@@ -29,7 +29,7 @@ module.exports = {
         ${hasOpenTime && (hasCloseTime || hasPhotoUrl) ? ", " : ""}
         ${hasCloseTime ? `"CloseTime" = '${closeTime}'` : ""}
         ${hasCloseTime && hasPhotoUrl ? "," : ''}
-        ${hasPhotoUrl ? `"PhotoUrl" = ${PhotoUrl}` : ''}
+        ${hasPhotoUrl ? `"PhotoUrl" = '${PhotoUrl}'` : ''}
         Where "Id" = ${id}
       `)
     },
