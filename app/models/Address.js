@@ -11,7 +11,7 @@ module.exports = {
     let hasWard = ward? true : false;
     let hasStreet = street ? true : false;
     let hasNumber = number ? true : false;
-    let makeQuery = hasProvince && hasDistrict && hasWard && hasStreet && hasNumber;
+    let makeQuery = hasDistrict && hasWard && hasStreet && hasNumber;
     if(!makeQuery) return;
     return query(`Update "Address" Set 
       ${hasDistrict ? `"District" = '${district}'` : ''}
