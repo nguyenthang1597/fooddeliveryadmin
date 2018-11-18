@@ -18,14 +18,14 @@ module.exports = {
       let hasName = name ? true : false;
       let hasOpenTime = openTime ? true : false
       let hasCloseTime = closeTime ? true : false
-      if(!(hasName && hasCloseTime && hasOpenTime))
-        return;
+      let makeQuery = hasName || hasOpenTime || hasCloseTime;
+      if(!makeQuery) return;
       return query(`
         Update "Restaurant" set 
         ${hasName ? `"Name" = '${name}'` : ""}
-        ${hasOpenTime || hasCloseTime ? ", " : ""}
+        ${hasName && (hasOpenTime || hasCloseTime) ? ", " : ""}
         ${hasOpenTime ? `"OpenTime" = '${openTime}'` : ""}
-        ${hasCloseTime ? ", " : ""}
+        ${hasOpenTime && hasCloseTime ? ", " : ""}
         ${hasCloseTime ? `"CloseTime" = '${closeTime}'` : ""}
         Where "Id" = ${id}
       `)

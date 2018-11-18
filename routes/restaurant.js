@@ -136,6 +136,7 @@ router.put('/:id', async (req, res) => {
     res.json({ Success: true })
     
   } catch (error) {
+    console.log(error)
     res.status(400).json({Success: false})
   }
 })

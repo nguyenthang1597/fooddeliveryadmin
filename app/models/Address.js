@@ -11,15 +11,16 @@ module.exports = {
     let hasWard = ward? true : false;
     let hasStreet = street ? true : false;
     let hasNumber = number ? true : false;
-    let makeQuery = hasDistrict && hasWard && hasStreet && hasNumber;
+
+    let makeQuery = hasDistrict || hasWard || hasStreet || hasNumber;
     if(!makeQuery) return;
     return query(`Update "Address" Set 
       ${hasDistrict ? `"District" = '${district}'` : ''}
-      ${hasWard || hasStreet || hasNumber ? "," : ''}
+      ${hasDistrict && (hasWard || hasStreet || hasNumber) ? "," : ''}
       ${hasWard ? `"Ward" = '${ward}'` : ''}
-      ${hasStreet || hasNumber ? "," : ''}
+      ${hasWard && (hasStreet || hasNumber) ? "," : ''}
       ${hasStreet ? `"Street" = '${street}'` : ''}
-      ${hasNumber ? "," : ''}
+      ${hasStreet && hasNumber ? "," : ''}
       ${hasNumber ? `"Number" = '${number}'` : ''}
       Where "Address"."Id" = ${id}
     `)
