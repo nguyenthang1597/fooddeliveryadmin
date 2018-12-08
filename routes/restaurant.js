@@ -57,7 +57,7 @@ router.post('/', async (req, res) => {
     let resAddress = await createAddress(req.body.District, req.body.Ward, req.body.Street, req.body.Number);
     let AddressId = resAddress.rows[0].Id;
 
-    let resRestaurant = await createRes(req.body.Name, req.body.OpenTime, req.body.CloseTime, req.body.photoUrl, AddressId);
+    let resRestaurant = await createRes(req.body.Name, req.body.OpenTime, req.body.CloseTime, req.body.PhotoUrl, AddressId);
     let ResId = resRestaurant.rows[0].Id;
     await createMenu(ResId);
     res.json({ Success: true })
@@ -125,7 +125,7 @@ router.put('/:id', async (req, res) => {
       Error: result.error
     })
   }
-  
+
   try {
     let restaurant = await getById(req.params.id);
     if(!restaurant.rows[0]){
@@ -134,7 +134,7 @@ router.put('/:id', async (req, res) => {
     let updateRes = await updateResById(restaurant.rows[0].Id, req.body.Name, req.body.OpenTime, req.body.CloseTime, req.body.PhotoUrl);
     let   updateAdd = await updateById(restaurant.rows[0].Address, req.body.District, req.body.Ward, req.body.Street, req.body.Number);
     res.json({ Success: true })
-    
+
   } catch (error) {
     console.log(error)
     res.status(400).json({Success: false})
