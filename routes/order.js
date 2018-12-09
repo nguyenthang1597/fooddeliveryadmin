@@ -32,7 +32,7 @@ router.get('/count', async (req, res) => {
 
 router.get('/countbystate', async (req, res) => {
   let result = await countOrderByState();
-  res.send(res.rows)
+  res.send(result.rows)
 })
 
 module.exports = router;
