@@ -1,9 +1,19 @@
 const router = require("express").Router();
-const {getAll,getDetail} = require('../app/models/Order')
+const {getAll,getDetail,countOrder} = require('../app/models/Order')
 
-router.get('/getAll',async (req, res) => {
-  let result = await getAll();
-  return res.send(result.rows)
+router.get('/list',async (req, res) => {
+  let page = req.query.page || 1;
+  let perpage = req.query.perpage || 10;
+  let result = await getAll(page, perpage);
+  let total = (await countOrder()).rows[0].Total;
+  let respone = {
+    total,
+    page,
+    perpage,
+    pages: total%perpage===0 ? Math.round(total/perpage) : Math.round(total/perpage) + 1,
+    data: result.rows
+  }
+  return res.send(respone)
 })
 
 router.get('/detail', async (req, res) => {
@@ -15,5 +25,9 @@ router.get('/detail', async (req, res) => {
     return res.send([]);
 })
 
+router.get('/count', async (req, res) => {
+  let count = (await countOrder()).rows[0].Total;
+  res.send({count})
+})
 
 module.exports = router;
