@@ -1,6 +1,7 @@
 const router = require("express").Router();
-const {getAll,getDetail,countOrder, countOrderByState, addNew, addOrderDetail, getWaitingOrder} = require('../app/models/Order')
+const {getAll,getDetail,countOrder, countOrderByState, addNew, addOrderDetail, getWaitingOrder, accept, getDeliver} = require('../app/models/Order')
 const firebase = require('firebase');
+const authCheck = require('../app/middleware/checkAuth');
 router.get('/list',async (req, res) => {
   let page = req.query.page || 1;
   let perpage = req.query.perpage || 10;
@@ -69,6 +70,27 @@ router.post('/', async (req, res) => {
   } catch (e) {
     console.log(e);
     res.status(400).send({Success: false});
+  }
+})
+
+router.get('/accept',authCheck, async (req, res) => {
+  let id = req.query.id;
+
+  if(!id){
+    return res.status(400).send();
+  }
+
+  try {
+    let result = await getDeliver(id);
+    if(!result.rows[0].Deliver){
+      await accept(id, req.Id);
+      firebase.database().ref(`/order/${id}`).set(null)
+      return res.send({Success: true})
+    }
+    return res.status(400).send();
+  } catch (e) {
+    console.log(e);
+    return res.status(400).send();
   }
 })
 
