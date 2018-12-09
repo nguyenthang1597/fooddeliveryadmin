@@ -137,14 +137,13 @@ router.put('/info', authCheck, async (req, res, next) => {
         return res.json({
             Success: true,
             Message: 'Cập nhật thông tin thành công!'
-        })    
+        })
     } catch (error) {
         return res.status(417).json({
             Success: false,
             Message: 'Cập nhật thông tin thất bại'
         })
     }
-    
 })
 
 module.exports = router;

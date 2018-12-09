@@ -14,6 +14,7 @@ module.exports = new Strategy(
     let account = null;
     let res = await getByUsername(username);
     account = res.rows[0];
+    console.log(account)
     if (!account) {
       const error = new Error("Tài khoản không tồn tại!");
       error.name = "NotExistAccount";

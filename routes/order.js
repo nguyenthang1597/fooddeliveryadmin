@@ -55,10 +55,8 @@ router.post('/', async (req, res) => {
     let listPromise = list.map(i => addOrderDetail(id.rows[0].Id, i.Id, i.Quantity, i.Note))
     Promise.all(listPromise)
     .then(result => {
-      firebase.database().ref(`/order/${id.rows[0].Id}`).set({
-        Id: id.rows[0].Id,
-        ...order,
-        Deliver: ''
+      firebase.message().send({
+        message: 'Có đơn hàng mới'
       })
       res.status(200).send({Success: true});
     })
