@@ -1,6 +1,6 @@
 const router = require("express").Router();
-const {getAll,getDetail,countOrder, countOrderByState} = require('../app/models/Order')
-
+const {getAll,getDetail,countOrder, countOrderByState, addNew, addOrderDetail, getWaitingOrder} = require('../app/models/Order')
+const firebase = require('firebase');
 router.get('/list',async (req, res) => {
   let page = req.query.page || 1;
   let perpage = req.query.perpage || 10;
@@ -33,6 +33,43 @@ router.get('/count', async (req, res) => {
 router.get('/countbystate', async (req, res) => {
   let result = await countOrderByState();
   res.send(result.rows)
+})
+
+router.get('/waiting', async(req, res) => {
+  let result = await getWaitingOrder();
+  res.send({Data: result.rows})
+})
+
+
+router.post('/', async (req, res) => {
+  let order = {
+    Name: req.body.Name,
+    District: req.body.District,
+    Ward: req.body.Ward,
+    Street: req.body.Street,
+    Number: req.body.Number
+  }
+  let list = req.body.List;
+  try {
+    let id = await addNew(order.Name, order.District, order.Ward, order.Street, order.Number);
+    let listPromise = list.map(i => addOrderDetail(id.rows[0].Id, i.Id, i.Quantity, i.Note))
+    Promise.all(listPromise)
+    .then(result => {
+      firebase.database().ref(`/order/${id.rows[0].Id}`).set({
+        Id: id.rows[0].Id,
+        ...order,
+        Deliver: null
+      })
+      res.status(200).send({Success: true});
+    })
+    .catch(err => {
+      console.log(err);
+      res.status(400).send({Success: false})
+    })
+  } catch (e) {
+    console.log(e);
+    res.status(400).send({Success: false});
+  }
 })
 
 module.exports = router;
