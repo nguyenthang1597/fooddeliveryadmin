@@ -6,6 +6,6 @@ module.exports = {
   countOrder: () => query(`SELECT count("Id") as "Total" FROM "Order"`),
   countOrderByState: () => query(`Select "Order"."State", count("Order"."Id") as "Count" from "Order" group by "Order"."State"`),
   addOrderDetail: (id, idFood, quantity, note) => query(`insert into "OrderDetail" ("Id", "Food", "Quatity", "Note") values (${id}, ${idFood}, ${quantity}, '${note}')`),
-  getWaitingOrder: () => query(`select "Order".* from "Order" where "State" = 0`)
+  getWaitingOrder: () => query(`select "Order".* from "Order" where "State" = 0 Order by "BookAt" DESC`)
 
 }
