@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const {getAll,getDetail,countOrder} = require('../app/models/Order')
+const {getAll,getDetail,countOrder, countOrderByState} = require('../app/models/Order')
 
 router.get('/list',async (req, res) => {
   let page = req.query.page || 1;
@@ -28,6 +28,11 @@ router.get('/detail', async (req, res) => {
 router.get('/count', async (req, res) => {
   let count = (await countOrder()).rows[0].Total;
   res.send({count})
+})
+
+router.get('/countbystate', async (req, res) => {
+  let result = await countOrderByState();
+  res.send(res.rows)
 })
 
 module.exports = router;
