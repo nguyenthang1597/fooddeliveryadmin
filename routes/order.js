@@ -58,7 +58,7 @@ router.post('/', async (req, res) => {
       firebase.database().ref(`/order/${id.rows[0].Id}`).set({
         Id: id.rows[0].Id,
         ...order,
-        Deliver: null
+        Deliver: ''
       })
       res.status(200).send({Success: true});
     })
