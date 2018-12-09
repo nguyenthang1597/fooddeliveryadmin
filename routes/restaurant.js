@@ -10,7 +10,7 @@ router.get('/list', async (req, res) => {
   let perpage = req.query.perpage || 10;
   let list = await getAll(page, perpage);
   let total = (await countNumberRestaurant()).rows[0].total;
-  res.json({Total: total, page: page, pages: total%perpage>0 ? total/perpage + 1 : total/perpage, perpage:perpage, Restaurants: list.rows });
+  res.json({total: total, page: page, pages: total%perpage===0 ? Math.round(total/perpage) : Math.round(total/perpage) + 1, perpage:perpage, Restaurants: list.rows });
 })
 
 function checkValidateResData(payload) {
@@ -201,10 +201,17 @@ router.post('/:id/menu', async (req, res) => {
   }
 })
 
+router.get('/count', async (req, res) => {
+  let result = await countNumberRestaurant();
+  return res.send({count: result.rows[0].total})
+})
+
+
 router.get('/:id', async (req, res) => {
   let result = await getById(req.params.id);
   return res.json({Restaurant: result.rows[0]})
 })
+
 
 
 module.exports = router;
