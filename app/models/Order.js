@@ -10,5 +10,6 @@ module.exports = {
   accept: (id, idDeliver) => query(`update "Order" set "Deliver" = ${idDeliver}, "State" = 1 where "Id" = ${id}`),
   getDeliver: (id) => query(`select "Deliver" from "Order" where "Id" = ${id}`),
   getMyOrder: (id) => query(`select * from "Order" where "Deliver" = ${id}`),
-  receiveOrder: (id) => query(`Update "Order" set "State" = 2`)
+  receiveOrder: (id) => query(`Update "Order" set "State" = 2`),
+  getOrderById: (id) => query(`Select * from "Order" Where "Id" = ${id}`)
 }
