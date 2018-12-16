@@ -8,5 +8,5 @@ module.exports = {
   updateFood: (id, photoUrl, price, name) => {
     return query(`update "Food" set "PhotoUrl" = '${photoUrl}', "Name" = '${name}', "Price" = '${price}' where "Id" = ${id}`)
   },
-  delete: (id) => query(`update "Food" set "Delete" = 1 where "Id" = ${id}`)
+  deleteFood: (id) => query(`update "Food" set "Delete" = 1 where "Id" = ${id}`)
 }

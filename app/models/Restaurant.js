@@ -39,5 +39,5 @@ module.exports = {
     countNumberRestaurant: () => {
       return query(`select count("Id") as Total from "Restaurant"`)
     },
-    delete : (id) => query(`update "Restaurant" set "Delete" = 1 where "Id" = ${id}`)
+    deleteRes : (id) => query(`update "Restaurant" set "Delete" = 1 where "Id" = ${id}`)
 };
