@@ -95,11 +95,7 @@ router.get('/accept',authCheck, async (req, res) => {
 })
 
 router.get('/myorder', authCheck, async(req, res) => {
-<<<<<<< HEAD
   let id = req.Id;
-=======
-  let id = req.id;
->>>>>>> e5fe3cc8863ec8b6c4e11dfc01267f0327ffe3f1
 
   if(!id){
     return res.status(400).send();
