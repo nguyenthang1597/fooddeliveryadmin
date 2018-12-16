@@ -95,7 +95,7 @@ router.get('/accept',authCheck, async (req, res) => {
 })
 
 router.get('/myorder', authCheck, async(req, res) => {
-  let id = req.query.id;
+  let id = req.id;
 
   if(!id){
     return res.status(400).send();
@@ -106,7 +106,7 @@ router.get('/myorder', authCheck, async(req, res) => {
       Data: result.rows
     })
   } catch (e) {
-    
+
   } finally {
 
   }
