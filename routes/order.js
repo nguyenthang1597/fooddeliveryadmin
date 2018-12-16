@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const {getAll,getDetail,countOrder, countOrderByState, addNew, addOrderDetail, getWaitingOrder, accept, getDeliver} = require('../app/models/Order')
+const {getAll,getDetail,countOrder, countOrderByState, addNew, addOrderDetail, getWaitingOrder, accept, getDeliver, getMyOrder} = require('../app/models/Order')
 const firebase = require('firebase');
 const authCheck = require('../app/middleware/checkAuth');
 router.get('/list',async (req, res) => {
@@ -91,6 +91,24 @@ router.get('/accept',authCheck, async (req, res) => {
   } catch (e) {
     console.log(e);
     return res.status(400).send();
+  }
+})
+
+router.get('/myorder', authCheck, async(req, res) => {
+  let id = req.query.id;
+
+  if(!id){
+    return res.status(400).send();
+  }
+  try {
+    let result = await getMyOrder(id);
+    res.json({
+      Data: result.rows
+    })
+  } catch (e) {
+    
+  } finally {
+
   }
 })
 
