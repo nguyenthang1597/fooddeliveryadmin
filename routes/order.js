@@ -135,6 +135,7 @@ router.get('/received', authCheck, async(req, res) => {
 router.get('/:id/state', async (req, res) => {
   try {
     let result = await getOrderById(req.params.id)
+    console.log(result);
     res.json({
       State: result.rows[0].State
     })
