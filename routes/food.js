@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const {count, updateFood} = require('../app/models/Food')
+const {count, updateFood, delete} = require('../app/models/Food')
 
 router.get('/count', async (req, res) => {
   let result = await count();
@@ -19,8 +19,21 @@ router.put('/:id', async (req, res) => {
   } finally {
 
   }
+})
 
+router.delete('/:id', async (req, res) => {
+  try {
+    await delete(req.params.id);
+    res.json({
+      Success: true
+    })
+  } catch (e) {
+    res.status(400).json({
+      Success: false
+    })
+  } finally {
 
+  }
 })
 
 

@@ -22,7 +22,7 @@ module.exports = {
       let makeQuery = hasName || hasOpenTime || hasCloseTime || hasPhotoUrl;
       if(!makeQuery) return;
       return query(`
-        Update "Restaurant" set 
+        Update "Restaurant" set
         ${hasName ? `"Name" = '${name}'` : ""}
         ${hasName && (hasOpenTime || hasCloseTime) ? ", " : ""}
         ${hasOpenTime ? `"OpenTime" = '${openTime}'` : ""}
@@ -39,4 +39,5 @@ module.exports = {
     countNumberRestaurant: () => {
       return query(`select count("Id") as Total from "Restaurant"`)
     },
+    delete : (id) => query(`update "Restaurant" set "Delete" = 1 where "Id" = ${id}`)
 };

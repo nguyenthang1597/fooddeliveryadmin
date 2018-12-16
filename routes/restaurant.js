@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { getAll,countNumberRestaurant, createRes, getById, updateResById, getMenuById } = require('../app/models/Restaurant');
+const { getAll,countNumberRestaurant, createRes, getById, updateResById, getMenuById, delete } = require('../app/models/Restaurant');
 const { createAddress , updateById} = require('../app/models/Address')
 const {createMenu, getMenuIdOfRes} = require('../app/models/RestaurantMenu')
 const {createFood} = require('../app/models/Food')
@@ -210,6 +210,21 @@ router.get('/count', async (req, res) => {
 router.get('/:id', async (req, res) => {
   let result = await getById(req.params.id);
   return res.json({Restaurant: result.rows[0]})
+})
+
+router.delete('/:id', async (req, res) => {
+  try {
+    await delete(req.params.id);
+    res.json({
+      Success: true
+    })
+  } catch (e) {
+    res.status(400).json({
+      Success: false
+    })
+  } finally {
+
+  }
 })
 
 
