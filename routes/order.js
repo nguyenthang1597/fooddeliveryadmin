@@ -112,7 +112,7 @@ router.get('/myorder', authCheck, async(req, res) => {
   }
 })
 
-router.get('/received', authCheck, async(req, res) => {
+router.get('/received', async(req, res) => {
   let id = req.query.id;
 
   if(!id){
