@@ -3,7 +3,7 @@ const { query } = require("./db");
 module.exports = {
     getAll: (page, perpage) => {
       return query(
-        `SELECT "Restaurant"."Id", "Restaurant"."Name", "Restaurant"."OpenTime", "Restaurant"."CloseTime", "Restaurant"."Like", "Restaurant"."Rating", "Restaurant"."PhotoUrl","Address"."Province", "Address"."Province", "Address"."District","Address"."Ward", "Address"."Street", "Address"."Number" FROM "Restaurant", "Address" WHERE "Restaurant"."Address" = "Address"."Id" LIMIT ${perpage} OFFSET ${perpage * (page - 1)}`
+        `SELECT "Restaurant"."Id", "Restaurant"."Name", "Restaurant"."OpenTime", "Restaurant"."CloseTime", "Restaurant"."Like", "Restaurant"."Rating", "Restaurant"."PhotoUrl","Address"."Province", "Address"."Province", "Address"."District","Address"."Ward", "Address"."Street", "Address"."Number" FROM "Restaurant", "Address" WHERE "Restaurant"."Address" = "Address"."Id" and "Restaurant"."Delete" = 0 LIMIT ${perpage} OFFSET ${perpage * (page - 1)}`
       );
     },
     getById: (id) => {
@@ -34,7 +34,7 @@ module.exports = {
       `)
     },
     getMenuById: (id) => {
-      return query(`select "Food".* from "Food", "MenuDetail", "RestaurantMenu" where "RestaurantMenu"."Menu" = "MenuDetail"."MenuId" and "MenuDetail"."FoodId" = "Food"."Id" and "RestaurantMenu"."RestaurantId" = ${id}`)
+      return query(`select "Food".* from "Food", "MenuDetail", "RestaurantMenu" where "RestaurantMenu"."Menu" = "MenuDetail"."MenuId" and "MenuDetail"."FoodId" = "Food"."Id" and "RestaurantMenu"."RestaurantId" = ${id} and "Food"."Delete" = 0`)
     },
     countNumberRestaurant: () => {
       return query(`select count("Id") as Total from "Restaurant"`)
